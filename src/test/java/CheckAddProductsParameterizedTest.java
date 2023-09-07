@@ -1,3 +1,4 @@
+import io.restassured.http.Cookie;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,10 +26,15 @@ public class CheckAddProductsParameterizedTest extends BaseTestDB{
 
         ProductClient productClient = new ProductClient();
         ProductPojo productPojo = new ProductPojo(name, type, exotic);
+        String cookieName = "JSESSIONID";
 
         ValidatableResponse responseAdd = productClient.addProduct(productPojo); // добавление товара через API
+        String sessionId = responseAdd.extract().cookie(cookieName);
+        Cookie cookie = new Cookie.Builder(cookieName, sessionId).build();
 
+        productClient.checkProduct(productPojo,  cookie);// проверка добавления товара через API
         checkProductAvailability(name, type, exotic); //проверка добавления товара через БД
+
         productClient.reset(); //сброс тестовых данных через API
     }
 

@@ -1,10 +1,12 @@
 package product;
 
 import httpClient.HttpClient;
+import io.restassured.http.Cookie;
 import io.restassured.response.ValidatableResponse;
 import pojos.ProductPojo;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasItem;
 
 public class ProductClient extends HttpClient {
     private static final String GET_PATH = "/api/food";
@@ -22,12 +24,15 @@ public class ProductClient extends HttpClient {
     }
 
 //    @Step("Получить список товаров")
-    public ValidatableResponse getListProducts() {
+    public ValidatableResponse checkProduct(ProductPojo productPojo, Cookie cookie) {
         return given()
                 .spec(getSpec())
+                .cookie(cookie)
                 .when()
                 .get(GET_PATH)
-                .then();
+                .then()
+                .assertThat()
+                .body("name", hasItem(productPojo.getName()));
     }
 
 //    @Step("Сброс тестовых данных")
