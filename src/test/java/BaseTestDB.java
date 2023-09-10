@@ -5,6 +5,7 @@ import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import io.qameta.allure.Step;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +31,7 @@ public class BaseTestDB {
         connection = dataSource.getConnection();
     }
 
-    //    @Step("Проверка добавления товара через БД")
+    @Step("Проверка добавления товара через БД")
     public static void checkProductAvailability(String name, String type, Boolean exotic) throws SQLException { //проверить добавление товара
         try (PreparedStatement selectStatement = connection.prepareStatement(Queries.selectProduct)) {
             selectStatement.setString(1, name);

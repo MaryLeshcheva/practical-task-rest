@@ -1,6 +1,7 @@
 package product;
 
 import httpClient.HttpClient;
+import io.qameta.allure.Step;
 import io.restassured.http.Cookie;
 import io.restassured.response.ValidatableResponse;
 import pojos.ProductPojo;
@@ -13,7 +14,8 @@ public class ProductClient extends HttpClient {
     private static final String POST_PATH = "/api/food";
     private static final String POST_RESET_PATH = "/api/data/reset";
 
-//    @Step("Добавление нового товара")
+
+    @Step("Добавление нового товара")
     public ValidatableResponse addProduct (ProductPojo productPojo) {
         return given()
                 .spec(getSpec())
@@ -23,7 +25,8 @@ public class ProductClient extends HttpClient {
                 .then();
     }
 
-//    @Step("Получить список товаров")
+
+    @Step("Проверка добавления товара через API")
     public ValidatableResponse checkProduct(ProductPojo productPojo, Cookie cookie) {
         return given()
                 .spec(getSpec())
@@ -35,7 +38,8 @@ public class ProductClient extends HttpClient {
                 .body("name", hasItem(productPojo.getName()));
     }
 
-//    @Step("Сброс тестовых данных")
+
+    @Step("Сброс тестовых данных")
     public ValidatableResponse reset() {
         return given()
                 .spec(getSpec())
